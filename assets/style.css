@@ -1,1 +1,42 @@
-form {float: right;}
+form {color: orangered;
+    font-size: 20px;
+    font-family: 'B612 Mono', monospace;
+}
+
+#button-view {
+    width: 100%;
+}
+
+p {color: orangered;
+    font-size: 20px;
+    font-family: 'B612 Mono', monospace;
+}
+
+.genre-btn {background-color: orangered;
+font-size: 15px;
+width: 13%;
+font-family: 'B612 Mono', monospace;
+color: white;
+margin: 0px 5px 10px 10px;
+padding: 5px 5px 5px 5px;
+border-radius: 10px;
+}
+
+.genre-btn:focus {
+    outline: 0;
+}
+
+#add-genre {background-color: orangered;
+    font-size: 15px;
+    width: 110px;
+    font-family: 'B612 Mono', monospace;
+    color: white;
+    margin: 0px 5px 10px 10px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+}
+
+#gif-display {display: grid;
+    grid-template-columns: 300px 300px 300px 300px 100px;
+
+}

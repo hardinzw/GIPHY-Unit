@@ -6,29 +6,15 @@
   <meta charset="utf-8">
   <title>GIPHY Unit</title>
   <link rel="stylesheet" href="assets/style.css">
+  <link href="https://fonts.googleapis.com/css?family=B612+Mono&display=swap" rel="stylesheet">
 </head>
 
-<body>
-  <button data-genre="action">Action</button>
-  <button data-genre="adventure">Adventure</button>
-  <button data-genre="comedy">Comedy</button>
-  <button data-genre="crime">Crime</button>
-  <button data-genre="drama">Drama</button>
-  <button data-genre="fantasy">Fantasy</button>
-  <button data-genre="historical">Historical</button>
-  <button data-genre="horror">Horror</button>
-  <button data-genre="mystery">Mystery</button>
-  <button data-genre="philosophical">Philosophical</button>
-  <button data-genre="political">Political</button>
-  <button data-genre="romance">Romance</button>
-  <button data-genre="satire">Satire</button>
-  <button data-genre="thriller">Thriller</button>
-  <button data-genre="western">Western</button>
-  <form>
+<body background="assets/images/1eefc5567dc5c55f67ef6849b9235582.jpg">
+  <div id="button-view"></div>
+  <form id="genre-form">
     <label for="genre-input">Add Genre:</label>
     <input type="text" id="genre-input">
     <br>
-    <!-- Button triggers new movie to be added -->
     <input id="add-genre" type="submit" value="Search">
   </form>
   <div id="gif-display"></div>
@@ -36,34 +22,69 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
-    //add click listener
-    $("button").on("click", function () {
-      var genre = $(this).attr("data-genre");
+
+    var genres = ["Action", "Adventure", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Horror", "Mystery", "Philosophy", "Political", "Romance", "Satire", "Thrill", "Western"];
+
+    function displayGif() {
+
+      var genre = $(this).attr("data-name");
       var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + genre + "&api_key=j0SEnv1AyCa4wkjDuhzl7HVWrJ4ZQCIg";
 
       $.ajax({
         url: queryURL,
         method: "GET"
-      })
-        .then(function (response) {
-          console.log(queryURL);
-          console.log(response);
+      }).then(function (response) {
 
-          var results = response.data;
+        console.log(queryURL);
+        console.log(response);
 
-          for (var i = 0; i < results.length; i++) {
-            var genreDiv = $("<div>");
-            var p = $("<p>").text("Rating: " + results[i].rating);
-            var genreImage = $("<img>");
+        var results = response.data;
 
-            genreImage.attr("src", results[i].images.fixed_width.url);
-            genreDiv.append(p);
-            genreDiv.append(genreImage);
+        for (var i = 0; i < results.length; i++) {
+          var genreDiv = $("<div>");
+          var p = $("<p>").text("Rating: " + results[i].rating);
+          var genreImage = $("<img>");
 
-            $("#gif-display").prepend(genreDiv);
-          }
-        });
+          genreImage.attr("src", results[i].images.fixed_width.url);
+          genreDiv.append(p);
+          genreDiv.append(genreImage);
+
+          $("#gif-display").prepend(genreDiv);
+        }
+      });
+    };
+
+    function displayButtons() {
+      $("#button-view").empty();
+      for (var i = 0; i < genres.length; i++) {
+        var tag = $("<button>");
+        tag.addClass("genre-btn");
+        tag.attr("data-name", genres[i]);
+        tag.text(genres[i]);
+        $("#button-view").append(tag);
+      }
+    }
+
+    $("#add-genre").on("click", function (event) {
+      event.preventDefault();
+      var genreInput = $("#genre-input").val().trim();
+      genres.push(genreInput);
+      displayButtons();
     });
+
+    $(document).on("click", ".genre-btn", displayGif);
+    displayButtons();
+
+    $("#gif-display").on("click", function () {
+      var state = $(this).attr("data-state");
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    })
   </script>
 
 </body>
