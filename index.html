@@ -25,6 +25,7 @@
 
     var genres = ["Action", "Adventure", "Comedy", "Crime", "Drama", "Fantasy", "Historical", "Horror", "Mystery", "Philosophy", "Political", "Romance", "Satire", "Thrill", "Western"];
 
+    //function to populate gifs using API
     function displayGif() {
 
       var genre = $(this).attr("data-name");
@@ -40,20 +41,22 @@
 
         var results = response.data;
 
-        for (var i = 0; i < results.length; i++) {
+        for (var i = 0; i < 10; i++) {
           var genreDiv = $("<div>");
           var p = $("<p>").text("Rating: " + results[i].rating);
-          var genreImage = $("<img>");
-
-          genreImage.attr("src", results[i].images.fixed_width.url);
+          var genreImage = $("<img class='gif'>").attr({"src": results[i].images.fixed_width_still.url,
+          "data-still": results[i].images.fixed_width_still.url,
+          "data-animate": results[i].images.fixed_width.url,
+          "data-state": "still"});
           genreDiv.append(p);
           genreDiv.append(genreImage);
-
           $("#gif-display").prepend(genreDiv);
         }
       });
     };
 
+
+    //function to create buttons and add click listeners
     function displayButtons() {
       $("#button-view").empty();
       for (var i = 0; i < genres.length; i++) {
@@ -75,16 +78,19 @@
     $(document).on("click", ".genre-btn", displayGif);
     displayButtons();
 
-    $("#gif-display").on("click", function () {
+    $(document).on("click", ".gif", function() {
       var state = $(this).attr("data-state");
       if (state === "still") {
         $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
+        $(this).attr("data-name", "animate");
       } else {
         $(this).attr("src", $(this).attr("data-still"));
         $(this).attr("data-state", "still");
+        console.log(this)
       }
-    })
+
+    });
+
   </script>
 
 </body>
